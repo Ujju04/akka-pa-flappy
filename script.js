@@ -5,12 +5,14 @@
     
     // 1. 🖼️ Load the logo image for the bird
     const logoImg = new Image();
+    // 🚨 FIXED: Use lowercase filename to avoid Vercel case-sensitivity error
     logoImg.src = 'logo_black-removebg-preview.png'; 
     logoImg.crossOrigin = 'anonymous'; 
 
     // 2. 🏞️ Load the background image
     const backgroundImg = new Image();
-    backgroundImg.src = 'Rialo banner.png'; 
+    // 🚨 FIXED: Use lowercase and underscore to avoid Vercel case-sensitivity/space-encoding errors
+    backgroundImg.src = 'rialo_banner.png'; 
     backgroundImg.crossOrigin = 'anonymous';
 
     // Game variables
@@ -193,27 +195,23 @@
         // ground
         drawGround();
 
-        // 🚀 MODIFIED CODE: Center and enlarge "Railo flappy bird" within the ground area
-        const fontSize = 56;
-        const textYOffset = 20; // Fine-tuning offset to visually center the baseline
-        
-        ctx.font = `${fontSize}px system-ui`; 
-        ctx.fillStyle = '#111'; 
-        ctx.strokeStyle = '#fff'; 
-        ctx.lineWidth = 6; 
-        const titleText = 'Railo flappy bird';
-        
-        // Calculate Y position to center the text vertically in the ground area (H - ground.h) to H
-        // Center Y position: H - (ground.h / 2)
-        // Adjust for baseline: + (fontSize / 3) is a common visual trick, using textYOffset for simple adjustment
-        const centerY = H - (ground.h / 2) + textYOffset; 
+        // 🚀 MODIFIED CODE: Center and enlarge "Railo flappy bird" within the ground area
+        const fontSize = 56;
+        const textYOffset = 20; 
+        
+        ctx.font = `${fontSize}px system-ui`; 
+        ctx.fillStyle = '#111'; 
+        ctx.strokeStyle = '#fff'; 
+        ctx.lineWidth = 6; 
+        const titleText = 'Railo flappy bird';
+        
+        const centerY = H - (ground.h / 2) + textYOffset; 
 
-        // Calculate X position to center the text horizontally
-        const textX = W/2 - ctx.measureText(titleText).width/2;
+        const textX = W/2 - ctx.measureText(titleText).width/2;
 
-        ctx.strokeText(titleText, textX, centerY); 
-        ctx.fillText(titleText, textX, centerY);
-        // 🚀 END MODIFIED CODE
+        ctx.strokeText(titleText, textX, centerY); 
+        ctx.fillText(titleText, textX, centerY);
+        // 🚀 END MODIFIED CODE
 
         // overlay score - Scaled 2x
         ctx.font = '72px system-ui'; 
