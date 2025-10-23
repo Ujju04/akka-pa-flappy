@@ -73,46 +73,44 @@
     }
 
     // Draw helpers
-    function drawBird(b){
+   function drawBird(b){
     ctx.save();
     ctx.translate(b.x + b.w/2, b.y + b.h/2); 
     ctx.rotate(b.rotate);
-
-    // 1. **DEFINE THE CIRCLE PATH AND USE IT AS A CLIP**
+    
+    // 1. Define the circle path for the background and stroke
     ctx.beginPath();
     ctx.arc(0, 0, b.w / 2, 0, Math.PI * 2);
-    ctx.closePath();
     
-    // Set this path as the clipping area. Everything drawn after this
-    // (the image) will be clipped to the shape of the circle.
+    // FIX 1: Change to fully opaque white (alpha = 1.0)
+    ctx.fillStyle = '#FFFFFF'; 
+    ctx.fill(); 
+    
+    // 2. Define the path for the clipping mask to crop the image
+    // NOTE: If you clip here, the stroke drawn after may also be clipped.
     ctx.clip(); 
 
-    // 2. Draw the logo image (it will now be clipped to the circle)
+    // 3. Draw the image (It is now masked by the clip)
     if (logoImg.complete) {
         ctx.drawImage(logoImg, -b.w / 2, -b.h / 2, b.w, b.h);
     }
-
-    // 3. **DRAW THE STROKE/OUTLINE (Must be after clipping)**
-    // To ensure the white background is visible, we'll draw the white background
-    // and the stroke *before* clipping, but drawing it afterwards
-    // works better if the logo is dominant. Let's simplify this.
-    // NOTE: If you want a white fill behind the image, draw it *before* the clip.
-    // If you only want the stroke, draw it after the clip but before ctx.restore().
     
-    // Redraw the circle path (without filling, just for the stroke)
-    ctx.beginPath(); 
-    ctx.arc(0, 0, b.w / 2, 0, Math.PI * 2);
-    
-    // Draw the white circle background (opacity is for transparency)
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'; 
-    ctx.fill(); 
+    // 4. End the clipping (We use save/restore, but must draw the stroke outside the clip)
+    ctx.restore(); 
 
+    // RE-DRAW THE STROKE OUTSIDE THE CLIP TO PREVENT IT FROM BEING CUT OFF
+    ctx.save();
+    ctx.translate(b.x + b.w/2, b.y + b.h/2); 
+    ctx.rotate(b.rotate);
+    
     // Draw the black stroke border
+    ctx.beginPath();
+    ctx.arc(0, 0, b.w / 2, 0, Math.PI * 2);
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 2; 
     ctx.stroke();
     ctx.closePath();
-
+    
     ctx.restore();
 }
 
@@ -274,6 +272,7 @@
     if (backgroundImg.complete) imageLoadCheck();
 
   })();
+
 
 
 
