@@ -203,7 +203,7 @@
         ctx.fillStyle = '#111'; 
         ctx.strokeStyle = '#fff'; 
         ctx.lineWidth = 6; 
-        const titleText = 'sentinent flappy bird';
+        const titleText = 'Sentinent flappy bird';
         
         const centerY = H - (ground.h / 2) + textYOffset; 
 
@@ -254,4 +254,5 @@
     if (backgroundImg.complete) imageLoadCheck();
 
   })();
+
 
